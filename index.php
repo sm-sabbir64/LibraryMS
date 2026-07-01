@@ -17,9 +17,9 @@ try {
     <div class="container position-relative z-1">
         <div class="row align-items-center">
             <div class="col-lg-6" data-aos="fade-right">
-                <span class="badge bg-primary bg-opacity-10 text-primary mb-3 px-3 py-2 rounded-pill fw-bold">Welcome to LibraryMS</span>
+                <span class="badge bg-primary bg-opacity-10 text-primary mb-3 px-3 py-2 rounded-pill fw-bold">Welcome to KPI Central Library</span>
                 <h1 class="hero-title">Expand Your Mind, One Book at a Time.</h1>
-                <p class="hero-subtitle">Discover thousands of books, explore new genres, and manage your reading journey seamlessly with our modern library platform.</p>
+                <p class="hero-subtitle">The Official Digital Library of Kurigram Polytechnic Institute.</p>
                 <div class="d-flex gap-3">
                     <a href="browse.php" class="btn btn-primary btn-lg rounded-pill px-4 shadow-sm">Explore Catalog <i class="bi bi-arrow-right ms-2"></i></a>
                     <a href="#featured" class="btn btn-outline-dark btn-lg rounded-pill px-4">View Features</a>

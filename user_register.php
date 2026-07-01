@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Member Registration - LibraryMS</title>
+    <title>Member Registration - KPI Library</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -122,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
     <div class="register-card">
         <div class="register-header">
             <i class="bi bi-person-plus"></i>
-            <h3 class="fw-bold mb-0">Join the Library</h3>
+            <h3 class="fw-bold mb-0">Join the KPI Library</h3>
             <p class="mb-0 text-white-50">Create an account to borrow books</p>
         </div>
         <div class="register-body">

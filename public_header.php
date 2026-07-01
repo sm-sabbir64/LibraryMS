@@ -29,7 +29,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <div class="brand-icon d-inline-block align-middle me-2">
                 <i class="bi bi-book-half"></i>
             </div>
-            LibraryMS
+            LibraryMS | KPI
         </a>
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-toggle="navbarNav">
             <span class="navbar-toggler-icon"></span>

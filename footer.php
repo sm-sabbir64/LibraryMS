@@ -2,7 +2,7 @@
 
     <footer class="footer mt-auto py-3 bg-light border-top">
         <div class="container text-center">
-            <span class="text-muted">© <?php echo date('Y'); ?> Library Management System. Developed by Sabbir Hossain (CST, KPI).</span>
+            <span class="text-muted">© <?php echo date('Y'); ?> KPI Library Management System. Developed by Sabbir Hossain (CST, KPI).</span>
         </div>
     </footer>
 

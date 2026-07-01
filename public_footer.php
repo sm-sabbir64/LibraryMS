@@ -49,7 +49,7 @@
             <div class="row mt-5 pt-4 border-top border-secondary border-opacity-50">
                 <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
                     <span class="text-light opacity-50 small">
-                        &copy; <?php echo date('Y'); ?> LibraryMS. All rights reserved.
+                        &copy; <?php echo date('Y'); ?> KPI Library Management System. All rights reserved.
                     </span>
                 </div>
                 <div class="col-md-6 text-center text-md-end">
