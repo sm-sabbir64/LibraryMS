@@ -199,6 +199,17 @@ if (!$book) {
             <h1 class="reader-title"><?php echo htmlspecialchars($book['title']); ?></h1>
             <div class="reader-author"><?php echo htmlspecialchars($book['author']); ?></div>
             
+            <div class="mt-4" style="font-family: 'Inter', sans-serif;">
+                <?php 
+                    $due_date = strtotime($transaction['due_date']);
+                    $is_overdue = ($due_date < time());
+                ?>
+                <span class="badge <?php echo $is_overdue ? 'bg-danger' : 'bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25'; ?> rounded-pill px-3 py-2 fs-6 fw-medium shadow-sm">
+                    <i class="bi bi-calendar-event me-2"></i> Due Date: <?php echo date('M d, Y', $due_date); ?>
+                    <?php if($is_overdue) echo " <span class='ms-1 text-uppercase small fw-bold'>(Overdue)</span>"; ?>
+                </span>
+            </div>
+            
             <?php if(!empty($book['description'])): ?>
                 <div class="mt-5 text-center fst-italic" style="font-family: 'Lora', serif; font-size: 1.1rem; opacity: 0.8; max-width: 600px; margin: 0 auto;">
                     "<?php echo htmlspecialchars($book['description']); ?>"

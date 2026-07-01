@@ -28,7 +28,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['ajax_borrow'])) {
             echo json_encode(['success' => false, 'message' => 'You already borrowed this book.']);
             exit();
         } elseif ($book && $book['available_copies'] > 0) {
-            $due_date = date('Y-m-d', strtotime('+14 days'));
+            $duration = isset($_POST['duration']) ? (int)$_POST['duration'] : 14;
+            if (!in_array($duration, [3, 7, 14, 30])) {
+                $duration = 14;
+            }
+            $due_date = date('Y-m-d', strtotime("+$duration days"));
             
             $stmt1 = $pdo->prepare("INSERT INTO transactions (book_id, borrower_id, borrow_date, due_date) VALUES (?, ?, CURDATE(), ?)");
             $stmt1->execute([$book_id, $user_id, $due_date]);
@@ -115,6 +119,45 @@ try {
             </div>
         </div>
     </div>
+</div>
+
+<!-- Borrow Modal -->
+<div class="modal fade" id="borrowModal" tabindex="-1" aria-labelledby="borrowModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold" id="borrowModalLabel">Select Borrow Duration</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted">How many days do you want to borrow this book?</p>
+        <input type="hidden" id="modalBookId" value="">
+        <div class="form-check mb-2">
+            <input class="form-check-input" type="radio" name="borrowDuration" id="dur3" value="3">
+            <label class="form-check-label" for="dur3">3 Days</label>
+        </div>
+        <div class="form-check mb-2">
+            <input class="form-check-input" type="radio" name="borrowDuration" id="dur7" value="7">
+            <label class="form-check-label" for="dur7">7 Days</label>
+        </div>
+        <div class="form-check mb-2">
+            <input class="form-check-input" type="radio" name="borrowDuration" id="dur14" value="14" checked>
+            <label class="form-check-label" for="dur14">14 Days (Standard)</label>
+        </div>
+        <div class="form-check mb-2">
+            <input class="form-check-input" type="radio" name="borrowDuration" id="dur30" value="30">
+            <label class="form-check-label" for="dur30">30 Days</label>
+        </div>
+        <div class="alert alert-warning mt-3 mb-0" style="font-size: 0.9rem;">
+            <i class="bi bi-info-circle me-1"></i> A fine of 10 Taka/day will apply if not returned on time.
+        </div>
+      </div>
+      <div class="modal-footer border-0 pt-0 mt-3">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="confirmBorrowBtn">Confirm Borrow</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -218,64 +261,73 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
+    let currentBorrowBtn = null;
+    let borrowModal = null;
+
     function attachBorrowListeners() {
+        if (!borrowModal) {
+            borrowModal = new bootstrap.Modal(document.getElementById('borrowModal'));
+        }
         document.querySelectorAll('.borrow-btn').forEach(button => {
             button.addEventListener('click', function() {
                 const bookId = this.getAttribute('data-id');
-                const btn = this;
-                
-                // Disable button during request
-                const originalText = btn.innerHTML;
-                btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
-                btn.disabled = true;
-
-                const formData = new FormData();
-                formData.append('ajax_borrow', '1');
-                formData.append('book_id', bookId);
-
-                fetch('browse.php', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if(data.redirect) {
-                        window.location.href = 'user_login.php';
-                        return;
-                    }
-
-                    toastBody.textContent = data.message;
-                    toastEl.className = `toast align-items-center text-white border-0 bg-${data.success ? 'success' : 'danger'}`;
-                    toast.show();
-
-                    if(data.success) {
-                        btn.innerHTML = '<i class="bi bi-check2"></i> Borrowed';
-                        btn.classList.replace('btn-primary', 'btn-success');
-                        
-                        // Update count
-                        const stockSpan = document.querySelector(`.stock-count-${bookId}`);
-                        if (data.new_count > 0) {
-                            stockSpan.textContent = data.new_count + ' Available';
-                        } else {
-                            stockSpan.textContent = 'Out of Stock';
-                            stockSpan.classList.replace('text-success', 'text-danger');
-                            btn.classList.replace('btn-success', 'btn-secondary');
-                            btn.textContent = 'Unavailable';
-                            btn.disabled = true;
-                        }
-                    } else {
-                        btn.innerHTML = originalText;
-                        btn.disabled = false;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    btn.innerHTML = originalText;
-                    btn.disabled = false;
-                });
+                document.getElementById('modalBookId').value = bookId;
+                currentBorrowBtn = this;
+                borrowModal.show();
             });
         });
     }
+
+    document.getElementById('confirmBorrowBtn').addEventListener('click', function() {
+        const bookId = document.getElementById('modalBookId').value;
+        const duration = document.querySelector('input[name="borrowDuration"]:checked').value;
+        const btn = currentBorrowBtn;
+        
+        borrowModal.hide();
+        
+        // Disable button during request
+        if (btn) {
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+            btn.disabled = true;
+        }
+
+        const formData = new FormData();
+        formData.append('ajax_borrow', '1');
+        formData.append('book_id', bookId);
+        formData.append('duration', duration);
+
+        fetch('browse.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.redirect) {
+                window.location.href = 'user_login.php';
+                return;
+            }
+
+            toastBody.textContent = data.message;
+            toastEl.className = `toast align-items-center text-white border-0 bg-${data.success ? 'success' : 'danger'}`;
+            toast.show();
+
+            if (data.success) {
+                loadBooks();
+            } else if (btn) {
+                btn.innerHTML = 'Borrow Now';
+                btn.disabled = false;
+            }
+        })
+        .catch(error => {
+            toastBody.textContent = 'An error occurred. Please try again.';
+            toastEl.className = 'toast align-items-center text-white border-0 bg-danger';
+            toast.show();
+            if (btn) {
+                btn.innerHTML = 'Borrow Now';
+                btn.disabled = false;
+            }
+        });
+    });
 
     searchForm.addEventListener('submit', function(e) {
         e.preventDefault();

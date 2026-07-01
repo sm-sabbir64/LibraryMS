@@ -50,6 +50,9 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 <li class="nav-item">
                     <a class="nav-link <?php echo $current_page == 'transactions.php' ? 'active' : ''; ?>" href="transactions.php">Transactions</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo $current_page == 'support.php' ? 'active' : ''; ?>" href="support.php">Support Tickets</a>
+                </li>
             </ul>
             <ul class="navbar-nav ms-3">
                 <li class="nav-item">

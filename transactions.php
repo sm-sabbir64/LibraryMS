@@ -12,9 +12,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['return_book'])) {
     try {
         $pdo->beginTransaction();
 
-        // Update transaction status
-        $stmt = $pdo->prepare("UPDATE transactions SET status = 'returned', return_date = CURDATE() WHERE id = ?");
-        $stmt->execute([$transaction_id]);
+        // Get the due date to calculate fine
+        $stmt_due = $pdo->prepare("SELECT due_date FROM transactions WHERE id = ?");
+        $stmt_due->execute([$transaction_id]);
+        $txn = $stmt_due->fetch();
+        
+        $fine_amount = 0;
+        if ($txn && strtotime($txn['due_date']) < time()) {
+            $days_overdue = floor((time() - strtotime($txn['due_date'])) / (60 * 60 * 24));
+            $fine_amount = $days_overdue * 10;
+        }
+
+        // Update transaction status and fine
+        $stmt = $pdo->prepare("UPDATE transactions SET status = 'returned', return_date = CURDATE(), fine_amount = ? WHERE id = ?");
+        $stmt->execute([$fine_amount, $transaction_id]);
 
         // Increment available copies
         $stmt2 = $pdo->prepare("UPDATE books SET available_copies = available_copies + 1 WHERE id = ?");
@@ -78,7 +89,7 @@ try {
 
 // Fetch transactions (with filtering)
 $status_filter = $_GET['status'] ?? 'all';
-$query = "SELECT t.id, t.book_id, b.title as book_title, u.name as borrower_name, t.borrow_date, t.due_date, t.return_date, t.status 
+$query = "SELECT t.id, t.book_id, b.title as book_title, u.name as borrower_name, t.borrow_date, t.due_date, t.return_date, t.status, t.fine_amount 
           FROM transactions t 
           JOIN books b ON t.book_id = b.id 
           JOIN borrowers u ON t.borrower_id = u.id";
@@ -143,6 +154,7 @@ try {
                         <th>Borrower</th>
                         <th>Borrow Date</th>
                         <th>Due Date</th>
+                        <th>Fine</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -159,11 +171,25 @@ try {
                                     <?php 
                                     $due_date = strtotime($t['due_date']);
                                     $is_overdue = ($t['status'] === 'borrowed' && $due_date < time());
+                                    
+                                    $current_fine = 0;
+                                    if ($t['status'] === 'borrowed' && $is_overdue) {
+                                        $current_fine = floor((time() - $due_date) / (60 * 60 * 24)) * 10;
+                                    } elseif ($t['status'] === 'returned') {
+                                        $current_fine = $t['fine_amount'];
+                                    }
                                     ?>
                                     <span class="<?php echo $is_overdue ? 'text-danger fw-bold' : ''; ?>">
                                         <?php echo date('M d, Y', $due_date); ?>
                                         <?php if($is_overdue) echo ' <i class="bi bi-exclamation-circle"></i>'; ?>
                                     </span>
+                                </td>
+                                <td>
+                                    <?php if($current_fine > 0): ?>
+                                        <span class="text-danger fw-bold">৳ <?php echo number_format($current_fine, 2); ?></span>
+                                    <?php else: ?>
+                                        <span class="text-muted">-</span>
+                                    <?php endif; ?>
                                 </td>
                                 <td>
                                     <?php if($t['status'] == 'returned'): ?>
