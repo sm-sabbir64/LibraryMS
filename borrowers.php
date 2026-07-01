@@ -16,10 +16,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_borrower'])) {
         $messageType = "danger";
     } else {
         try {
+            $student_id = trim($_POST['student_id'] ?? '');
+
             // Default password is '12345'
             $default_password = password_hash('12345', PASSWORD_DEFAULT);
-            $stmt = $pdo->prepare("INSERT INTO borrowers (name, email, password, phone, address) VALUES (?, ?, ?, ?, ?)");
-            $stmt->execute([$name, $email, $default_password, $phone, $address]);
+            $stmt = $pdo->prepare("INSERT INTO borrowers (name, email, password, phone, address, student_id) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$name, $email, $default_password, $phone, $address, $student_id]);
             $message = "Member added successfully! Default password is '12345'.";
             $messageType = "success";
         } catch(PDOException $e) {
@@ -68,6 +70,7 @@ try {
                         <th>Name</th>
                         <th>Email</th>
                         <th>Phone</th>
+                        <th>Student ID</th>
                         <th>Joined</th>
                     </tr>
                 </thead>
@@ -86,12 +89,13 @@ try {
                                 </td>
                                 <td><a href="mailto:<?php echo htmlspecialchars($member['email']); ?>" class="text-decoration-none"><?php echo htmlspecialchars($member['email']); ?></a></td>
                                 <td><?php echo htmlspecialchars($member['phone'] ?? 'N/A'); ?></td>
+                                <td><?php echo htmlspecialchars($member['student_id'] ?? 'N/A'); ?></td>
                                 <td><?php echo date('M d, Y', strtotime($member['created_at'])); ?></td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="5" class="text-center py-5 text-muted">
+                            <td colspan="6" class="text-center py-5 text-muted">
                                 <i class="bi bi-people fs-1 d-block mb-2 text-secondary"></i>
                                 No members found.
                             </td>
@@ -128,6 +132,10 @@ try {
                     <div class="mb-3">
                         <label class="form-label">Address</label>
                         <textarea name="address" class="form-control" rows="2"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Student ID</label>
+                        <input type="text" name="student_id" class="form-control" placeholder="Enter Student ID">
                     </div>
                 </div>
                 <div class="modal-footer border-top-0">

@@ -27,7 +27,7 @@ if (!$book) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_book'])) {
     $title = trim($_POST['title']);
     $author = trim($_POST['author']);
-    $isbn = trim($_POST['isbn']);
+    $subject_code = trim($_POST['subject_code']);
     $category = trim($_POST['category']);
     $description = trim($_POST['description']);
     $book_content = trim($_POST['book_content'] ?? '');
@@ -70,8 +70,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_book'])) {
         $messageType = "danger";
     } else {
         try {
-            $stmt = $pdo->prepare("UPDATE books SET title=?, author=?, isbn=?, category=?, cover_url=?, description=?, book_content=?, published_year=?, total_copies=?, available_copies=? WHERE id=?");
-            $stmt->execute([$title, $author, $isbn, $category, $cover_url, $description, $book_content, $year, $new_total_copies, $new_available_copies, $book_id]);
+            $stmt = $pdo->prepare("UPDATE books SET title=?, author=?, subject_code=?, category=?, cover_url=?, description=?, book_content=?, published_year=?, total_copies=?, available_copies=? WHERE id=?");
+            $stmt->execute([$title, $author, $subject_code, $category, $cover_url, $description, $book_content, $year, $new_total_copies, $new_available_copies, $book_id]);
             
             $message = "Book updated successfully!";
             $messageType = "success";
@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_book'])) {
             
         } catch(PDOException $e) {
             if ($e->getCode() == 23000) { 
-                $message = "A book with this ISBN already exists.";
+                $message = "A book with this Subject Code already exists.";
             } else {
                 $message = "Error updating book: " . $e->getMessage();
             }
@@ -128,8 +128,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_book'])) {
                                 <input type="text" name="category" class="form-control" value="<?php echo htmlspecialchars($book['category']); ?>">
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label fw-semibold">ISBN</label>
-                                <input type="text" name="isbn" class="form-control" value="<?php echo htmlspecialchars($book['isbn']); ?>">
+                                <label class="form-label fw-semibold">Subject Code</label>
+                                <input type="text" name="subject_code" class="form-control" value="<?php echo htmlspecialchars($book['subject_code']); ?>">
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-semibold">Published Year</label>

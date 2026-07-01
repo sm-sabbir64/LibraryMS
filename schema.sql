@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS books (
     category VARCHAR(100),
     cover_url VARCHAR(255),
     author VARCHAR(255) NOT NULL,
-    isbn VARCHAR(50) UNIQUE,
+    subject_code VARCHAR(50) UNIQUE,
     published_year INT,
     total_copies INT DEFAULT 1,
     available_copies INT DEFAULT 1,
@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS borrowers (
     password VARCHAR(255) NOT NULL,
     phone VARCHAR(20),
     address TEXT,
+    profile_picture VARCHAR(255) NULL DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -52,7 +53,7 @@ CREATE TABLE IF NOT EXISTS transactions (
 );
 
 -- Insert Sample Data
-INSERT INTO books (title, author, isbn, description, category, cover_url, published_year, total_copies, available_copies) VALUES
+INSERT INTO books (title, author, subject_code, description, category, cover_url, published_year, total_copies, available_copies) VALUES
 ('The Great Gatsby', 'F. Scott Fitzgerald', '9780743273565', 'A classic novel exploring themes of decadence, idealism, and resistance to change.', 'Classic Fiction', 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=600&auto=format&fit=crop', 1925, 5, 5),
 ('To Kill a Mockingbird', 'Harper Lee', '9780060935467', 'A novel about the serious issues of rape and racial inequality told from a child''s perspective.', 'Historical Fiction', 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=600&auto=format&fit=crop', 1960, 3, 3),
 ('1984', 'George Orwell', '9780451524935', 'A dystopian social science fiction novel and cautionary tale about the dangers of totalitarianism.', 'Science Fiction', 'https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=600&auto=format&fit=crop', 1949, 4, 4),

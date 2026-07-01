@@ -9,6 +9,12 @@ if (!isset($_SESSION['user_id'])) {
 
 require_once 'db.php';
 $current_page = basename($_SERVER['PHP_SELF']);
+
+// Fetch user data for header
+$header_stmt = $pdo->prepare("SELECT name, profile_picture FROM borrowers WHERE id = ?");
+$header_stmt->execute([$_SESSION['user_id']]);
+$header_user = $header_stmt->fetch();
+$header_profile_pic = !empty($header_user['profile_picture']) ? $header_user['profile_picture'] : 'https://ui-avatars.com/api/?name=' . urlencode($header_user['name']) . '&background=0D8ABC&color=fff';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,9 +58,12 @@ $current_page = basename($_SERVER['PHP_SELF']);
                     <a class="nav-link active fw-bold text-white" href="user_dashboard.php"><i class="bi bi-person-badge me-1"></i>My Books</a>
                 </li>
             </ul>
-            <ul class="navbar-nav ms-3">
+            <ul class="navbar-nav ms-3 align-items-center">
+                <li class="nav-item me-3">
+                    <img src="<?php echo htmlspecialchars($header_profile_pic); ?>" alt="Profile" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover; border: 2px solid rgba(255,255,255,0.5);">
+                </li>
                 <li class="nav-item">
-                    <a class="btn btn-outline-light btn-sm mt-1" href="user_logout.php">
+                    <a class="btn btn-outline-light btn-sm mt-1 mt-lg-0" href="user_logout.php">
                         <i class="bi bi-box-arrow-right me-1"></i>Logout
                     </a>
                 </li>

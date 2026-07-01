@@ -48,8 +48,16 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </ul>
             <div class="d-flex align-items-center gap-2">
                 <?php if(isset($_SESSION['user_id'])): ?>
-                    <a href="user_dashboard.php" class="btn btn-primary rounded-pill px-4 shadow-sm" style="font-weight: 500;">
-                        <i class="bi bi-person-circle me-2"></i>My Dashboard
+                    <?php
+                        require_once 'db.php';
+                        $header_stmt = $pdo->prepare("SELECT name, profile_picture FROM borrowers WHERE id = ?");
+                        $header_stmt->execute([$_SESSION['user_id']]);
+                        $header_user = $header_stmt->fetch();
+                        // 1st picture design: User initials in a circle (handled by ui-avatars if no picture)
+                        $header_profile_pic = !empty($header_user['profile_picture']) ? $header_user['profile_picture'] : 'https://ui-avatars.com/api/?name=' . urlencode($header_user['name']) . '&background=0D8ABC&color=fff';
+                    ?>
+                    <a href="user_dashboard.php" class="d-inline-block rounded-circle shadow-sm" style="width: 45px; height: 45px; overflow: hidden; border: 2px solid rgba(13, 138, 188, 0.5); transition: transform 0.2s;" title="My Dashboard" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                        <img src="<?php echo htmlspecialchars($header_profile_pic); ?>" alt="Dashboard" style="width: 100%; height: 100%; object-fit: cover;">
                     </a>
                 <?php else: ?>
                     <a href="user_login.php" class="btn btn-login-member">Log In</a>

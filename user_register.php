@@ -27,9 +27,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
         $messageType = "danger";
     } else {
         try {
+            $student_id = trim($_POST['student_id'] ?? '');
+
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $pdo->prepare("INSERT INTO borrowers (name, email, password, phone, address) VALUES (?, ?, ?, ?, ?)");
-            $stmt->execute([$name, $email, $hashed_password, $phone, $address]);
+            $stmt = $pdo->prepare("INSERT INTO borrowers (name, email, password, phone, address, student_id) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$name, $email, $hashed_password, $phone, $address, $student_id]);
             
             $message = "Registration successful! You can now log in.";
             $messageType = "success";
@@ -73,16 +75,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
         }
         .register-header {
             background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
-            padding: 40px 20px;
+            padding: 25px 20px;
             text-align: center;
             color: white;
         }
         .register-header i {
-            font-size: 3rem;
-            margin-bottom: 10px;
+            font-size: 2.5rem;
+            margin-bottom: 5px;
         }
         .register-body {
-            padding: 40px 30px;
+            padding: 25px 30px;
             background: white;
         }
         .form-control {
@@ -130,14 +132,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
                 </div>
             <?php endif; ?>
             
-            <form method="POST">
-                <div class="mb-3">
-                    <label class="form-label text-muted fw-semibold">Full Name *</label>
-                    <input type="text" name="name" class="form-control" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label text-muted fw-semibold">Email Address *</label>
-                    <input type="email" name="email" class="form-control" required>
+            <form method="POST" autocomplete="off">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-muted fw-semibold">Full Name *</label>
+                        <input type="text" name="name" class="form-control" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-muted fw-semibold">Email Address *</label>
+                        <input type="email" name="email" class="form-control" required>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6 mb-3">
@@ -149,13 +153,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
                         <input type="password" name="confirm_password" class="form-control" required>
                     </div>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label text-muted fw-semibold">Phone Number</label>
-                    <input type="text" name="phone" class="form-control">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-muted fw-semibold">Phone Number</label>
+                        <input type="text" name="phone" class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-muted fw-semibold">Student ID</label>
+                        <input type="text" name="student_id" class="form-control" placeholder="ID Number">
+                    </div>
                 </div>
                 <div class="mb-4">
                     <label class="form-label text-muted fw-semibold">Address</label>
-                    <textarea name="address" class="form-control" rows="2"></textarea>
+                    <input type="text" name="address" class="form-control" placeholder="Optional">
                 </div>
                 
                 <button type="submit" name="register" class="btn btn-register mt-2">

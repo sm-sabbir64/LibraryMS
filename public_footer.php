@@ -55,7 +55,7 @@
                 </div>
                 <div class="col-md-6 text-center text-md-end">
                     <span class="text-light opacity-50 small">
-                        Developed with <i class="bi bi-heart-fill text-danger"></i> by Sabbir (CST, KPI)
+                        Developed with <i class="bi bi-heart-fill text-danger"></i> by Sabbir Hossain (CST, KPI)
                     </span>
                 </div>
             </div>

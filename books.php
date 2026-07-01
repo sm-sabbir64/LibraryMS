@@ -8,7 +8,7 @@ $messageType = '';
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_book'])) {
     $title = trim($_POST['title']);
     $author = trim($_POST['author']);
-    $isbn = trim($_POST['isbn']);
+    $subject_code = trim($_POST['subject_code']);
     $category = trim($_POST['category']);
     $cover_url = trim($_POST['cover_url']);
     $description = trim($_POST['description']);
@@ -41,13 +41,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_book'])) {
         $messageType = "danger";
     } else {
         try {
-            $stmt = $pdo->prepare("INSERT INTO books (title, author, isbn, category, cover_url, description, book_content, published_year, total_copies, available_copies) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$title, $author, $isbn, $category, $cover_url, $description, $book_content, $year, $copies, $copies]);
+            $stmt = $pdo->prepare("INSERT INTO books (title, author, subject_code, category, cover_url, description, book_content, published_year, total_copies, available_copies) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$title, $author, $subject_code, $category, $cover_url, $description, $book_content, $year, $copies, $copies]);
             $message = "Book added successfully!";
             $messageType = "success";
         } catch(PDOException $e) {
-            if ($e->getCode() == 23000) { // Integrity constraint violation (duplicate ISBN)
-                $message = "A book with this ISBN already exists.";
+            if ($e->getCode() == 23000) { // Integrity constraint violation (duplicate Subject Code)
+                $message = "A book with this Subject Code already exists.";
             } else {
                 $message = "Error adding book: " . $e->getMessage();
             }
@@ -87,7 +87,7 @@ $query = "SELECT * FROM books";
 $params = [];
 
 if (!empty($search)) {
-    $query .= " WHERE title LIKE ? OR author LIKE ? OR isbn LIKE ?";
+    $query .= " WHERE title LIKE ? OR author LIKE ? OR subject_code LIKE ?";
     $searchTerm = "%$search%";
     $params = [$searchTerm, $searchTerm, $searchTerm];
 }
@@ -125,7 +125,7 @@ try {
             <div class="col-md-10">
                 <div class="input-group">
                     <span class="input-group-text bg-white"><i class="bi bi-search text-muted"></i></span>
-                    <input type="text" name="search" class="form-control border-start-0 ps-0" placeholder="Search by title, author, or ISBN..." value="<?php echo htmlspecialchars($search); ?>">
+                    <input type="text" name="search" class="form-control border-start-0 ps-0" placeholder="Search by title, author, or Subject Code..." value="<?php echo htmlspecialchars($search); ?>">
                 </div>
             </div>
             <div class="col-md-2">
@@ -145,7 +145,7 @@ try {
                         <th>ID</th>
                         <th>Title</th>
                         <th>Author</th>
-                        <th>ISBN</th>
+                        <th>Subject Code</th>
                         <th>Year</th>
                         <th>Availability</th>
                         <th class="text-end">Actions</th>
@@ -158,7 +158,7 @@ try {
                                 <td><?php echo $book['id']; ?></td>
                                 <td class="fw-medium text-primary"><?php echo htmlspecialchars($book['title']); ?></td>
                                 <td><?php echo htmlspecialchars($book['author']); ?></td>
-                                <td><?php echo htmlspecialchars($book['isbn']); ?></td>
+                                <td><?php echo htmlspecialchars($book['subject_code']); ?></td>
                                 <td><?php echo htmlspecialchars($book['published_year']); ?></td>
                                 <td>
                                     <?php 
@@ -217,8 +217,8 @@ try {
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">ISBN</label>
-                            <input type="text" name="isbn" class="form-control">
+                            <label class="form-label">Subject Code</label>
+                            <input type="text" name="subject_code" class="form-control">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Category</label>
