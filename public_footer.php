@@ -30,7 +30,6 @@
                     <h6 class="fw-bold text-uppercase mb-4 text-white letter-spacing-1">Links</h6>
                     <ul class="list-unstyled footer-links">
                         <li><a href="user_login.php">Member Portal</a></li>
-                        <li><a href="admin_login.php">Admin Login</a></li>
                         <li><a href="#">Help & Support</a></li>
                         <li><a href="#">Privacy Policy</a></li>
                     </ul>

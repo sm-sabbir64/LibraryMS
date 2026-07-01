@@ -124,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
                 </div>
             <?php endif; ?>
             
-            <form method="POST">
+            <form method="POST" autocomplete="off">
                 <div class="mb-4">
                     <label class="form-label text-muted fw-semibold">Username</label>
                     <div class="input-group">
