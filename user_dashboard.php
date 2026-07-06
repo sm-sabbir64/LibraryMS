@@ -220,7 +220,7 @@ try {
                             FROM transactions t 
                             JOIN books b ON t.book_id = b.id 
                             WHERE t.borrower_id = ? AND t.status = 'returned' 
-                            ORDER BY t.return_date DESC");
+                            ORDER BY t.return_date DESC, t.id DESC");
     $stmt2->execute([$user_id]);
     $returned_books = $stmt2->fetchAll();
 
