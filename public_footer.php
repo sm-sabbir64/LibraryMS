@@ -7,7 +7,7 @@
         <div class="container pt-4">
             <div class="row gy-5">
                 <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="0">
-                    <h4 class="fw-bold mb-4 text-white"><i class="bi bi-book-half me-2 text-primary"></i>LibraryMS</h4>
+                    <h4 class="fw-bold mb-4 text-white"><i class="bi bi-book-half me-2 text-primary"></i>KPI Digital Library</h4>
                     <p class="text-light opacity-75 mb-4 pe-lg-4" style="line-height: 1.7;">Empowering minds through knowledge. Our digital library offers thousands of books across all genres for you to explore.</p>
                     <div class="social-links d-flex gap-2">
                         <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
@@ -49,7 +49,7 @@
             <div class="row mt-5 pt-4 border-top border-secondary border-opacity-50">
                 <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
                     <span class="text-light opacity-50 small">
-                        &copy; <?php echo date('Y'); ?> KPI Library Management System. All rights reserved.
+                        &copy; <?php echo date('Y'); ?> KPI Digital Library. All rights reserved.
                     </span>
                 </div>
                 <div class="col-md-6 text-center text-md-end">

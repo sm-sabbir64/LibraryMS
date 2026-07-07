@@ -10,7 +10,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LibraryMS - Read. Learn. Grow.</title>
-    <!-- Bootstrap 5 CSS -->
+    <!-- Tai    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
@@ -29,7 +29,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <div class="brand-icon d-inline-block align-middle me-2">
                 <i class="bi bi-book-half"></i>
             </div>
-            LibraryMS | KPI
+            Digital Library | KPI
         </a>
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-toggle="navbarNav">
             <span class="navbar-toggler-icon"></span>

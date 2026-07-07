@@ -8,7 +8,7 @@ require_once 'public_header.php';
 <div class="hero-section text-center position-relative" style="padding: 120px 0 80px; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); overflow: hidden;">
     <div class="hero-shape" style="top: -50%; left: -10%; opacity: 0.5;"></div>
     <div class="container position-relative z-1">
-        <h1 class="fw-bold mb-3" style="font-size: 3.5rem; color: var(--dark);">About <span class="brand-icon">LibraryMS</span></h1>
+        <h1 class="fw-bold mb-3" style="font-size: 3.5rem; color: var(--dark);">About <span class="brand-icon">library</span></h1>
         <p class="text-muted mx-auto" style="max-width: 600px; font-size: 1.2rem;">
             We believe in the power of reading. Our mission is to provide seamless access to knowledge for everyone, anywhere, anytime.
         </p>
@@ -19,7 +19,7 @@ require_once 'public_header.php';
 <div class="container py-5 mt-4">
     <div class="row align-items-center mb-5 pb-4">
         <div class="col-lg-6 mb-4 mb-lg-0">
-            <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=800&auto=format&fit=crop" alt="Library Interior" class="img-fluid rounded-4 shadow-lg" style="object-fit: cover; height: 400px; width: 100%;">
+            <img src="uploads/Kurigram Polytechnic Institute.jpg" alt="Library Interior" class="img-fluid rounded-4 shadow-lg" style="object-fit: cover; height: 400px; width: 100%;">
         </div>
         <div class="col-lg-6 ps-lg-5">
             <h6 class="text-primary fw-bold text-uppercase mb-2">Our Story</h6>

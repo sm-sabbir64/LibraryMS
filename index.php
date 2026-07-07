@@ -25,8 +25,9 @@ try {
                     <a href="#featured" class="btn btn-outline-dark btn-lg rounded-pill px-4">View Features</a>
                 </div>
             </div>
-            <div class="col-lg-6 mt-5 mt-lg-0 text-center" data-aos="fade-left" data-aos-delay="200">
-                <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800&auto=format&fit=crop" alt="Library" class="img-fluid rounded-4 shadow-lg" style="transform: rotate(-3deg); border: 10px solid white;">
+            <div class="col-lg-6 mt-5 mt-lg-0 position-relative" data-aos="fade-left" data-aos-delay="200" style="min-height: 500px;">
+                <div class="position-absolute w-100 h-100 bg-primary rounded-start-5 shadow-lg" style="top: 20px; right: -20px; opacity: 0.1;"></div>
+                <img src="uploads/kurigram.jpg" alt="Library" class="position-absolute w-100 h-100 rounded-start-5 shadow-lg" style="object-fit: cover; top: 0; right: -15px; border: 8px solid white;">
             </div>
         </div>
     </div>
